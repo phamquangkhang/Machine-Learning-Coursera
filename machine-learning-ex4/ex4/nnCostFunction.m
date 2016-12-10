@@ -84,7 +84,23 @@ h = sigmoid(Z3);
 J += -Y(:)'*log(h(:)) - (1-Y(:))'*log(1-h(:));
 J = J/m;
 
+%With regulizationed params
+%Unrolling Theta1 and Theta2
+UnrollTheta1 = Theta1(:,2:end)(:);
+UnrollTheta2 = Theta2(:,2:end)(:);
+J += lambda/(2*m) * (UnrollTheta1'*UnrollTheta1 + UnrollTheta2'*UnrollTheta2);
 
+%%%Back Propagation%%%%%
+delta3 = h - Y;
+delta2 = (delta3*Theta2(:,2:end)).*sigmoidGradient(Z2);
+
+Theta1_grad += (delta2'*A1)/m;
+Theta2_grad += (delta3'*A2)/m;
+
+%%Regularization%%
+
+Theta1_grad(:,2:end) += lambda/m * Theta1(:,2:end);
+Theta2_grad(:,2:end) += lambda/m * Theta2(:,2:end);
 
 
 

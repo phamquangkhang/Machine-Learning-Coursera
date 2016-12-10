@@ -62,7 +62,27 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%Size of parameters
+% X : 5000 * 400
+% y : 5000 * 1: numbers from 1 to 10
+% Theta1: 25 * 401
+% Theta2: 10 * 26
+% first remake the output vector y and change into 5000 * 10 matrices
+Y = zeros (m, num_labels);
+for i = 1:m
+  Y(i,:) = 1:num_labels;
+end
+Y = Y == y;
 
+%Calculate hidden_layer:
+A1 = [ones(m,1) X];
+Z2 = A1 * Theta1';
+A2 = [ones(m,1) sigmoid(Z2)];
+Z3 = A2 * Theta2';
+h = sigmoid(Z3);
+
+J += -Y(:)'*log(h(:)) - (1-Y(:))'*log(1-h(:));
+J = J/m;
 
 
 
